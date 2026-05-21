@@ -16,9 +16,9 @@ if uploaded_file is not None:
     try:
         # Carregar os dados tentando UTF-8 primeiro, depois Latin-1
 try:
-    df = pd.read_csv(uploaded_file, low_memory=False, encoding='utf-8')
+    df = pd.read_csv(uploaded_file, low_memory=False, sep=';', encoding='utf-8')
 except UnicodeDecodeError:
-    df = pd.read_csv(uploaded_file, low_memory=False, encoding='latin-1')
+    df = pd.read_csv(uploaded_file, low_memory=False, sep=';', encoding='latin-1')
         
         st.success("Base de dados carregada com sucesso!")
         
