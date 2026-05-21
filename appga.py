@@ -13,7 +13,6 @@ st.markdown("Suba a sua base de dados em formato CSV para atualizar instantaneam
 uploaded_file = st.file_uploader("Selecione o ficheiro da base de dados (CSV)", type=["csv"])
 
 if uploaded_file is not None:
-    try:
         # Carregar os dados tentando UTF-8 primeiro, depois Latin-1
 try:
     df = pd.read_csv(uploaded_file, low_memory=False, sep=';', encoding='utf-8')
