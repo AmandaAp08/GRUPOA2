@@ -9,7 +9,9 @@ st.set_page_config(page_title="Dashboard de Atividades - Grupo A", layout="wide"
 st.title("📊 Painel de Controle de Atividades")
 st.markdown("Suba a sua base de dados em formato CSV para atualizar instantaneamente as visões operacionais.")
 
-# Componente para upload do ficheiro
+# --- LINHA QUE ESTAVA FALTANDO REINSERIDA AQUI ---
+uploaded_file = st.file_uploader("Selecione o ficheiro da base de dados (CSV)", type=["csv"])
+
 if uploaded_file is not None:
     try:
         # Carregar os dados tentando UTF-8 primeiro, depois Latin-1
@@ -82,7 +84,6 @@ if uploaded_file is not None:
                 st.plotly_chart(fig_status, use_container_width=True)
                 
         with col_graf2:
-            # Tenta encontrar a coluna de Tipo de Atividade
             tipo_cols = [c for c in df.columns if 'Tipo de Atividade' in c]
             if tipo_cols:
                 tipo_col = tipo_cols[0]
@@ -124,7 +125,7 @@ if uploaded_file is not None:
         # ----------------------------------------------------
         st.subheader("🔍 Explorador de Dados Completo")
         st.markdown("Utilize a tabela abaixo para filtrar, ordenar ou pesquisar registos específicos.")
-        st.dataframe(df.head(100)) # Mostra as primeiras 100 linhas de forma interativa
+        st.dataframe(df.head(100))
 
     except Exception as e:
         st.error(f"Ocorreu um erro ao processar o ficheiro: {e}")
