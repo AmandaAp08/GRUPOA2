@@ -116,7 +116,7 @@ if uploaded_file is not None:
                 markers=True,
                 line_shape='spline'
             )
-            fig_linha.update_traces(line_color='#2E86C1', lw=3)
+            fig_linha.update_traces(line=dict(color='#2E86C1', width=3))
             st.plotly_chart(fig_linha, use_container_width=True)
             
         # ----------------------------------------------------
