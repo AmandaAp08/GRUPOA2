@@ -14,11 +14,11 @@ uploaded_file = st.file_uploader("Selecione o ficheiro da base de dados (CSV)", 
 
 if uploaded_file is not None:
     try:
-        # Carregar os dados
-        df = pd.read_csv(uploaded_file, low_memory=False)
-        
-        # Limpeza rápida de nomes de colunas duplicadas ou com espaços
-        df.columns = [c.strip() for c in df.columns]
+        # Carregar os dados tentando UTF-8 primeiro, depois Latin-1
+try:
+    df = pd.read_csv(uploaded_file, low_memory=False, encoding='utf-8')
+except UnicodeDecodeError:
+    df = pd.read_csv(uploaded_file, low_memory=False, encoding='latin-1')
         
         st.success("Base de dados carregada com sucesso!")
         
