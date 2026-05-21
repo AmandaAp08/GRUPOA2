@@ -9,7 +9,7 @@ st.set_page_config(page_title="Dashboard de Atividades - Grupo A", layout="wide"
 st.title("📊 Painel de Controle de Atividades")
 st.markdown("Suba a sua base de dados em formato CSV para atualizar instantaneamente as visões operacionais.")
 
-# --- LINHA QUE ESTAVA FALTANDO REINSERIDA AQUI ---
+# Componente para upload do ficheiro
 uploaded_file = st.file_uploader("Selecione o ficheiro da base de dados (CSV)", type=["csv"])
 
 if uploaded_file is not None:
@@ -22,6 +22,10 @@ if uploaded_file is not None:
         
         # Limpeza rápida de nomes de colunas duplicadas ou com espaços
         df.columns = [c.strip() for c in df.columns]
+        
+        # Padroniza as cidades para letras maiúsculas (evita duplicar TERESINA e Teresina)
+        if 'Cidade' in df.columns:
+            df['Cidade'] = df['Cidade'].astype(str).str.upper()
         
         st.success("Base de dados carregada com sucesso!")
         
@@ -106,8 +110,9 @@ if uploaded_file is not None:
         st.subheader("📅 Evolução Temporal")
         data_col = 'Data' if 'Data' in df.columns else None
         if data_col and data_col in df.columns:
-            df[data_col] = pd.to_datetime(df[data_col], errors='coerce')
-            df_datas = df.dropna(subset=[data_col]).groupby(data_col.strip()).size().reset_index(name='Quantidade')
+            # Corrigido adicionando dayfirst=True para ler datas brasileiras corretamente
+            df[data_col] = pd.to_datetime(df[data_col], dayfirst=True, errors='coerce')
+            df_datas = df.dropna(subset=[data_col]).groupby(data_col).size().reset_index(name='Quantidade')
             
             fig_linha = px.line(
                 df_datas, 
